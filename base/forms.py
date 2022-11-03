@@ -14,3 +14,5 @@ class RoomForm(ModelForm):
         fields = '__all__'    
         # And not show excluded fields in the form 
         exclude = ["host", "participants"]
+
+# this is new changes
