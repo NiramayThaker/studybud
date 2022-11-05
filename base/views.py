@@ -176,7 +176,7 @@ def create_room(request):
         topic_name = request.POST.get("topic")
         # It will take all obj and check if name is in topic & if not then will create it's obj
         # If name is found then created value will be falsed
-        topic, created = topic.object.get_or_create(name=topic_name)
+        topic, created = Topic.objects.get_or_create(name=topic_name)
         # Then pass all the data received as response of our request of post methord and pass it to RoomForm in the form on dictionary
 
         Room.objects.create(
