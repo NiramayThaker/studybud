@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from .models import Room
+from django.contrib.auth.models import User
 
 """ ModelForm is a readymade form class(model) which helps creating a user input form directly 
 as per the specified field in the model assigned by us"""

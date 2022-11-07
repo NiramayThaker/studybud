@@ -216,11 +216,17 @@ def update_room(request, pk):
         return HttpResponse("You're not allowed here ..!")
 
     if request.method == 'POST':
-        # Here we have to specify which instance we need to update
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect("home")
+        topic_name = request.POST.get("topic")
+        # It will take all obj and check if name is in topic & if not then will create it's obj
+        # If name is found then created value will be falsed
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        # Then pass all the data received as response of our request of post methord and pass it to RoomForm in the form on dictionary
+        room.name = request.POST.get("name")
+        room.topic = topic
+        room.description = request.POST.get("description")
+        room.save()
+
+        return redirect("home")
 
     context = {'form': form, "topics": topics, "room": room}
 
@@ -262,3 +268,8 @@ def delete_message(request, pk):
     # pass the message object to page which has to be deleted
     return render(request, "base/delete.html", context)
 
+
+@login_required(login_url="login")
+def update_user(request):
+    context = {}
+    return render(request, 'base/update-user.html', context)
