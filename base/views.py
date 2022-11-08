@@ -1,14 +1,13 @@
-from pydoc_data.topics import topics
 from django.shortcuts import render, redirect # To render HTML page and redirect from one page to another
 from django.http import HttpResponse  # For Text printing
-from django.db.models import Q # Is used to Query data from table by sorting it with some parameter
-from django.contrib.auth.models import User # For user Authentication
-from django.contrib.auth import authenticate, login, logout # To Login, logout, functionality
-from django.contrib.auth.decorators import login_required # Wrap funtion inside decorater which checks login
+from django.db.models import Q  # Is used to Query data from table by sorting it with some parameter
+from django.contrib.auth.models import User  # For user Authentication
+from django.contrib.auth import authenticate, login, logout  # To Login, logout, functionality
+from django.contrib.auth.decorators import login_required  # Wrap funtion inside decorater which checks login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages # To show message 
-from .models import Room, Topic, Message # Externally created DataBases
-from .forms import RoomForm # Auto generated form for user input
+from django.contrib import messages  # To show message
+from .models import Room, Topic, Message  # Externally created DataBases
+from .forms import RoomForm, UserForm  # Auto generated form for user input
 
 # Create your views here.
 
@@ -271,5 +270,15 @@ def delete_message(request, pk):
 
 @login_required(login_url="login")
 def update_user(request):
-    context = {}
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == "POST":
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("user-profile", pk=user.id)
+
+    context = {"form": form}
+
     return render(request, 'base/update-user.html', context)

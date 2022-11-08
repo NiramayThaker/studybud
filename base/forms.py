@@ -16,3 +16,7 @@ class RoomForm(ModelForm):
         # And not show excluded fields in the form 
         exclude = ["host", "participants"]
 
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
