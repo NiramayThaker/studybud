@@ -101,7 +101,7 @@ def home(request):
     room_count = rooms.count()
 
     # Will fetch all topics name and display it for filter by topic 
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:5]
 
     # Grab all the message related to room name filter applied
     room_messages = Message.objects.filter(
@@ -270,6 +270,8 @@ def delete_message(request, pk):
 
 @login_required(login_url="login")
 def update_user(request):
+    """Page for user profile update"""
+
     user = request.user
     form = UserForm(instance=user)
 
@@ -282,3 +284,23 @@ def update_user(request):
     context = {"form": form}
 
     return render(request, 'base/update-user.html', context)
+
+
+def show_topics(request):
+    """FOR Mobile responsive Will fetch the data from url inside q
+    and if q doesn't match any data then return empty string"""
+
+# Currently redirecting and using home search of room not these one !!!
+    q = request.GET.get("q") if request.GET.get('q') != None else " "
+
+    # topics = Topic.objects.filter(name__icontains=q)
+    topics = Topic.objects.filter()
+    context = {"topics": topics}
+
+    return render(request, "base/topics.html", context)
+
+
+def activities(request):
+    room_messages = Message.objects.all()
+
+    return render(request, 'base/activity.html', {"room_messages": room_messages})

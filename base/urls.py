@@ -27,6 +27,10 @@ urlpatterns = [
 
     path("delete-message/<str:pk>/", views.delete_message, name="delete-message"),
 
-
     path("update-user/", views.update_user, name="update-user"),
+
+    # For mobile responsive
+    path("topics/", views.show_topics, name="topics"),
+
+    path("activities/", views.activities, name="activities"),
 ]
